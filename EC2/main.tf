@@ -1,7 +1,24 @@
-resource "aws_instance" "project" {
-  ami           = "ami-04a0ae173da5807d3"  # Replace with the desired AWS Linux 2023 AMI ID
-  instance_type = "t2.micro"  # Replace with the desired instance type
-  key_name      = "LaptopKey"  # Replace with the name of your key pair
+resource "aws_key_pair" "my_key_pair" {
+  key_name   = "LaptopKey"
+  public_key = file("~/.ssh/id_rsa.pub")
+}
+
+resource "aws_instance" "web1" {
+  ami                    = "ami-04a0ae173da5807d3"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.my_subnet.id
+  vpc_security_group_ids = [aws_security_group.ssh_allowed.id]
+  key_name               = aws_key_pair.my_key_pair.key_name
+  associate_public_ip_address = true
+
+  tags = {
+    Name = "project-instance"
+resource "aws_instance" "web1" {
+  ami                    = "ami-04a0ae173da5807d3"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.my_subnet.id
+  vpc_security_group_ids = [aws_security_group.ssh_allowed.id]
+  key_name               = "LaptopKey"
   associate_public_ip_address = true
 
   tags = {
@@ -63,6 +80,7 @@ resource "aws_instance" "project" {
   EOF
 }
 
+
 # Security group resource
 resource "aws_security_group" "wordpress_sg" {
   name        = "wordpress_sg"
@@ -88,4 +106,8 @@ resource "aws_security_group" "wordpress_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+resource "aws_rds_cluster_instance" "my_cluster_instance" {
+  cluster_identifier = aws_rds_cluster.my_cluster.id
+  instance_identifier = aws_instance.my_instance.id
 }

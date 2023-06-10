@@ -25,3 +25,16 @@ output "reader1_endpoint" {
 output "reader2_endpoint" {
   value = aws_route53_record.reader2_endpoint.fqdn
 }
+
+# Output the connection details
+output "rds_endpoint" {
+  value = aws_rds_cluster.rds.endpoint
+}
+
+output "rds_username" {
+  value = aws_rds_cluster.rds.master_username
+}
+
+output "rds_password" {
+  value = aws_rds_cluster.rds.master_password
+}
