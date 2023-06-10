@@ -75,11 +75,12 @@ resource "aws_route" "internet_gateway_route" {
   destination_cidr_block    = "0.0.0.0/0"
   gateway_id                = aws_internet_gateway.public-igw.id
 }
-route {
-    ipv4_cidr_block        = "::/0"
-    egress_only_gateway_id = aws_egress_only_internet_gateway.public-igw.id
-  }
-
+resource "aws_route" "custom_routes" {
+  for_each          = var.routes
+  route_table_id    = aws_route_table.rt.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id        = each.value.gateway_id
+}
 
 resource "aws_route_table_association" "public_subnet_association_1" {
   subnet_id      = aws_subnet.public_subnet_1.id
