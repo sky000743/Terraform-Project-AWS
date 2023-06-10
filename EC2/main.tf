@@ -1,7 +1,7 @@
 resource "aws_instance" "project" {
   ami           = "ami-04a0ae173da5807d3"  # Replace with the desired AWS Linux 2023 AMI ID
   instance_type = "t2.micro"  # Replace with the desired instance type
-  key_name      = "laptop"  # Replace with the name of your key pair
+  key_name      = "LaptopKey"  # Replace with the name of your key pair
   associate_public_ip_address = true
 
   tags = {

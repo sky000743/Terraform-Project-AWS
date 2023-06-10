@@ -66,6 +66,17 @@ resource "aws_internet_gateway" "public-igw" {
   }
 }
 
+resource "aws_route_table" "rt" {
+  vpc_id = aws_vpc.project.id
+}
+
+resource "aws_route" "internet_gateway_route" {
+  route_table_id            = aws_route_table.rt.id
+  destination_cidr_block    = "0.0.0.0/0"
+  gateway_id                = aws_internet_gateway.public-igw.id
+}
+
+
 resource "aws_route_table_association" "public_subnet_association_1" {
   subnet_id      = aws_subnet.public_subnet_1.id
   route_table_id = aws_vpc.project.default_route_table_id
@@ -94,27 +105,6 @@ resource "aws_nat_gateway" "private-gw" {
   tags = {
     Name = "nat-gw"
   }
-}
-
-resource "aws_route_table_association" "private_subnet_association_1" {
-  subnet_id      = aws_subnet.private_subnet_1.id
-  route_table_id = aws_vpc.project.default_route_table_id
-}
-
-resource "aws_route_table_association" "private_subnet_association_2" {
-  subnet_id      = aws_subnet.private_subnet_2.id
-  route_table_id = aws_vpc.project.default_route_table_id
-}
-
-resource "aws_route_table_association" "private_subnet_association_3" {
-  subnet_id      = aws_subnet.private_subnet_3.id
-  route_table_id = aws_vpc.project.default_route_table_id
-}
-
-resource "aws_route" "nat_gateway_route" {
-  route_table_id            = aws_vpc.project.default_route_table_id
-  destination_cidr_block    = "0.0.0.0/0"
-  nat_gateway_id            = aws_nat_gateway.private-gw.id
 }
 
 resource "aws_security_group" "project_security_group" {
