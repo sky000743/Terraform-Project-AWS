@@ -76,7 +76,7 @@ resource "aws_route" "internet_gateway_route" {
   gateway_id                = aws_internet_gateway.public-igw.id
 }
 resource "aws_route" "custom_routes" {
-  for_each          = var.routes
+  
   route_table_id    = aws_route_table.rt.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id        = aws_internet_gateway.public-igw.id
