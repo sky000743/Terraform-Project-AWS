@@ -11,6 +11,7 @@ resource "aws_rds_cluster" "rds" {
   backup_retention_period = 7
   preferred_backup_window = "02:00-03:00"
   vpc_security_group_ids  = ["sg-0c5d83c6ef6dc40f9"]  # Update with your desired security group ID
+  aws_vpc_id              = "aws_vpc.project.id"  # Add your VPC ID here
 
   db_subnet_group_name = aws_db_subnet_group.db-group.name  # Update with the correct variable name
 
@@ -18,6 +19,7 @@ resource "aws_rds_cluster" "rds" {
     Name = "rds-cluster"
   }
 }
+
 
 
 
