@@ -1,5 +1,5 @@
 resource "aws_autoscaling_group" "example" {
-  availability_zones = data.aws_availability_zones.all.names
+  availability_zones = data.aws_availability_zones.us-east-1.name
   desired_capacity   = 3
   max_size           = 99
   min_size           = 3
